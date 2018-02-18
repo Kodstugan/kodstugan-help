@@ -1,7 +1,14 @@
 {
-  "name": "$package_name$",
+  "name": "Kodstugan",
   "version": "0.0.1",
+  "description": "Kodstugan is a community driven by a group of Computer science students at Uppsala University, Sweden",
+  "main": "app.js",
+  "author": "Kodstugan",
+  "license": "MIT",
   "dependencies": {
-    $END$
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4",
+    "vue": "^2.5.13",
+    "vue-router": "^3.0.1"
   }
 }
