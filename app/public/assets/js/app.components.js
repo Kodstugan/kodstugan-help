@@ -35,7 +35,27 @@ const about_v = Vue.component('about-v', {
   </div>'
 });
 
-const help_list_v = Vue.component('help-list-v', {
+const question_list_v = Vue.component('question-list-v', {
+  data: function () {
+    return {
+      app: {}
+    }
+  },
+  created: function () {
+    this.app = this.$router.app;
+  },
   template: '\
-  <div class="help-list-v gradient"></div>'
+  <div class="question-list-v gradient">\
+    <question-v v-for="question in app.questions" :question="question" :key="question.id"></question-v>\
+  </div>'
+});
+
+const question_v = Vue.component('question-v', {
+  props: ['question'],
+  template: '\
+  <div class="question-v">\
+    <p class="name"><strong>Fredrik Andersson</strong></p>\
+    <p class="message"></p>\
+    <router-link to="{ name: \'question\', params: { id: 0 }}"></router-link>\
+  </div>'
 });

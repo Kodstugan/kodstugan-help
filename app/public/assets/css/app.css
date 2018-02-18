@@ -82,3 +82,10 @@ p {
 .about-v section:nth-child(even) {
   background: #F7F7F7;
 }
+
+/* question-list-v */
+
+.question-list-v {
+  padding: 30px;
+  color:   #fff;
+}
