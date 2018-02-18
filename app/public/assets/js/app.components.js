@@ -33,3 +33,8 @@ const about_v = Vue.component('about-v', {
     </section>\
   </div>'
 });
+
+const help_list_v = Vue.component('help-list-v', {
+  template: '\
+  <div class="help-list-v gradient"></div>'
+});

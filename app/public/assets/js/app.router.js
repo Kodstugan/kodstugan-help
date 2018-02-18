@@ -7,7 +7,7 @@ const router = new VueRouter({
       path: '/',
       components: {
         left_column: about_v,
-        right_column: null,
+        right_column: help_list_v,
         full_column: null,
       }
     },
