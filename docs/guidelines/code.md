@@ -1,6 +1,6 @@
-# styleguide - code
+# guideline - code
 
-#### variables
+## variables
 We only use **let** and **const** variables. People who use **var** will automatically be kicked and banned for life.
 ```
 let isRaining = true // re-assignable, although it wont change often in Sweden...

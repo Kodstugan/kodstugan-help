@@ -1,0 +1,14 @@
+{
+  "name": "kodstugan-web",
+  "version": "0.0.1",
+  "description": "kodstugan-web is a support/help system made specifically for kodstugan events.",
+  "main": "app.js",
+  "author": "Kodstugan",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4",
+    "vue": "^2.5.13",
+    "vue-router": "^3.0.1"
+  }
+}
