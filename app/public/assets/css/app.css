@@ -6,6 +6,10 @@
   padding:            0;
 }
 
+body {
+  background: #161616;
+}
+
 #app {
   width:     100%;
   max-width: 1024px;
