@@ -1,8 +1,6 @@
 "use strict";
 
-module.exports = function (app) {
-  const io = require('socket.io')(app.http);
-
+module.exports = function (app, io) {
   io.on('connection', function (socket) {
     socket.on('client/login', function (token) {});
     socket.on('client/logout', function (id) {});

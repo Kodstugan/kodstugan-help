@@ -4,11 +4,13 @@ const express = require('express');
 const app = express();
 
 const http = require('http').Server(app);
+const io = require('socket.io')(app.http);
+const path = require('path');
 
-require('./routes/index.js')(app);
-require('./config/index.js')(app);
-require('./socket/index.js')(app);
+require('./routes/index.js')(app, path);
+require('./config/index.js')(app, express, path, 1337);
+require('./socket/index.js')(app, io);
 
-const server = http.listen(app.get('port'), function () {
+http.listen(app.get('port'), function () {
   console.log('running @ localhost:' + app.get('port'));
 });
