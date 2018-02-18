@@ -7,6 +7,7 @@ const about_v = Vue.component('about-v', {
       <h1>Behöver du hjälp?</h1>\
       <p>\
         Segmentation fault? NullpointerException?\
+        <br/>\
         Vi alla har varit där, det kan vara otroligt frustrerande när man väl fastnar i sin kod. Men du kan vara lugn, \
         tillsammans är vi (förhoppningsvis) kloka.\
         <br/>\
