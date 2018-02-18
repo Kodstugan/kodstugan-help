@@ -1,6 +1,6 @@
 # app
 
-## guidelines
+### guidelines
 
 - [code](../docs/guidelines/code.md)
 - [git](../docs/guidelines/git.md)
