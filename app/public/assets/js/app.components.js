@@ -46,7 +46,8 @@ const question_list_v = Vue.component('question-list-v', {
   },
   template: '\
   <div class="question-list-v gradient">\
-    <question-v v-for="question in app.questions" :question="question" :key="question.id"></question-v>\
+    <h1>Hjälplistan</h1>\
+    <question-v v-for="question in app.questions" :question="question" :key="question.key"></question-v>\
   </div>'
 });
 
@@ -54,8 +55,13 @@ const question_v = Vue.component('question-v', {
   props: ['question'],
   template: '\
   <div class="question-v">\
-    <p class="name"><strong>Fredrik Andersson</strong></p>\
-    <p class="message"></p>\
-    <router-link to="{ name: \'question\', params: { id: 0 }}"></router-link>\
+    <div class="left-column">\
+      <img :src="question.image_url" alt="">\
+    </div>\
+    <div class="right-column">\
+      <p class="name">{{ question.first_name }} {{ question.last_name }}</p>\
+      <p class="message">{{ question.message }}</p>\
+      <router-link to="{ name: \'question\', params: { id: question.id }}" class="button">Hjälp {{ question.first_name }}</router-link>\
+    </div>\
   </div>'
 });
