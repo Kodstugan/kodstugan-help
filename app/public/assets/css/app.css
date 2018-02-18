@@ -43,10 +43,33 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 36px;
+  font-size:     36px;
+  margin-bottom: 20px;
 }
 
 p {
-  font-size: 16px;
-  color:     rgba(0, 0, 0, 0.75);
+  font-size:   16px;
+  color:       rgba(0, 0, 0, 0.75);
+  line-height: 1.4;
+}
+
+.button {
+  width:           100%;
+  display:         block;
+  padding:         20px 10px;
+  text-align:      center;
+  color:           #fff;
+  text-decoration: none;
+  font-weight:     500;
+}
+
+/* about-v */
+
+.about-v section {
+  background: #fff;
+  padding:    30px;
+}
+
+.about-v section:nth-child(even) {
+  background: #F7F7F7;
 }
