@@ -5,3 +5,16 @@
   margin:             0;
   padding:            0;
 }
+
+#app {
+  width:     100%;
+  max-width: 1024px;
+  margin:    0 auto;
+  overflow:  hidden;
+}
+
+.left-column, .right-column {
+  width:    50%;
+  float:    left;
+  overflow: hidden;
+}
