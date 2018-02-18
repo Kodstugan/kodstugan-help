@@ -1,7 +1,7 @@
 {
-  "name": "Kodstugan",
+  "name": "kodstugan-web",
   "version": "0.0.1",
-  "description": "Kodstugan is a community driven by a group of Computer science students at Uppsala University, Sweden",
+  "description": "kodstugan-web is a support/help system made specifically for kodstugan events.",
   "main": "app.js",
   "author": "Kodstugan",
   "license": "MIT",
