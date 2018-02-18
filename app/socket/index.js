@@ -1,3 +1,5 @@
+"use strict";
+
 io.on('connection', function (socket) {
   socket.on('client/login', function (token) {});
   socket.on('client/logout', function (id) {});
