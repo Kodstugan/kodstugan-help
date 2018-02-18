@@ -91,34 +91,46 @@ p {
   overflow: hidden;
 }
 
-.question-list-v .left-column {
+/* question-v */
+
+.question-v {
+  width:         100%;
+  overflow:      hidden;
+  margin-bottom: 30px;
+}
+
+.question-v:last-child {
+  margin-bottom: 0;
+}
+
+.question-v .left-column {
   width:        50px;
   float:        left;
   margin-right: 20px;
 }
 
-.question-list-v .right-column {
+.question-v .right-column {
   width: auto;
   float: left;
 }
 
-.question-list-v img {
+.question-v img {
   width:         100%;
   border-radius: 50%;
 }
 
-.question-list-v .name {
+.question-v .name {
   opacity:     1;
   font-weight: 500;
   color:       #fff;
   margin-top:  4px;
 }
 
-.question-list-v .message {
+.question-v .message {
   color: #fff;
 }
 
-.question-list-v .button {
+.question-v .button {
   width:      auto;
   display:    inline-block;
   margin-top: 15px;
