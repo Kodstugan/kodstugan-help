@@ -6,7 +6,7 @@ const router = new VueRouter({
     {
       path: '/',
       components: {
-        left_column: null,
+        left_column: about_v,
         right_column: null,
         full_column: null,
       }
@@ -21,6 +21,15 @@ const router = new VueRouter({
     },
     {
       path: '/new',
+      components: {
+        left_column: null,
+        right_column: null,
+        full_column: null,
+      }
+    },
+    {
+      path: '/question/:id',
+      name: 'question',
       components: {
         left_column: null,
         right_column: null,
