@@ -23,3 +23,11 @@ body {
   overflow: hidden;
 }
 
+.gradient {
+  background: #0f6ecc;
+  background: -moz-linear-gradient(-45deg, #0f6ecc 0%, #169b96 100%);
+  background: -webkit-linear-gradient(-45deg, #0f6ecc 0%, #169b96 100%);
+  background: linear-gradient(135deg, #0f6ecc 0%, #169b96 100%);
+  filter:     progid:DXImageTransform.Microsoft.gradient(startColorstr='#0f6ecc', endColorstr='#169b96', GradientType=1);
+}
+
