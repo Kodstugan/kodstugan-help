@@ -12,6 +12,14 @@ const router = new VueRouter({
       }
     },
     {
+      path: '/register',
+      components: {
+        left_column: null,
+        right_column: null,
+        full_column: null,
+      }
+    },
+    {
       path: '/new',
       components: {
         left_column: null,
