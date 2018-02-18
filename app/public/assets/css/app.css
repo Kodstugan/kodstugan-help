@@ -110,8 +110,9 @@ p {
 }
 
 .question-v .right-column {
-  width: auto;
-  float: left;
+  width:    auto;
+  float:    none;
+  overflow: hidden;
 }
 
 .question-v img {
