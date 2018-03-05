@@ -2,7 +2,7 @@
   "name": "kodstugan-web",
   "version": "0.0.1",
   "description": "kodstugan-web is a support/help system made specifically for kodstugan events.",
-  "main": "app.js",
+  "main": "server.js",
   "author": "Kodstugan",
   "license": "MIT",
   "dependencies": {

@@ -25,6 +25,12 @@ const data = {
       first_name: 'Sebastian',
       last_name: 'Lhådö',
       message: 'Finns det någon som är duktig på gcc här?'
+    },
+    4: {
+      image_url: 'https://scontent-arn2-1.xx.fbcdn.net/v/t31.0-8/14257489_10207662234296743_5548954200368099881_o.jpg?oh=2276a54839395fd58a611c9a6a05c53d&oe=5B1E7D66',
+      first_name: 'Sebastian',
+      last_name: 'Lhådö',
+      message: 'Finns det någon som är duktig på gcc här?'
     }
   }
 };
