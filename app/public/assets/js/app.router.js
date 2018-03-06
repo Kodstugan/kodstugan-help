@@ -12,9 +12,9 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/register',
+      path: '/login',
       components: {
-        left_column: null,
+        left_column: login_v,
         right_column: null,
         full_column: null,
       }
@@ -25,6 +25,36 @@ const router = new VueRouter({
         left_column: null,
         right_column: null,
         full_column: null,
+      },
+      beforeEnter: (to, from, next) => {
+        if (isLoggedIn()) {
+          next();
+        } else {
+          next('/login');
+        }
+      }
+    },
+    {
+      path: '/privacy',
+      components: {
+        left_column: null,
+        right_column: null,
+        full_column: null,
+      }
+    },
+    {
+      path: '/profile',
+      components: {
+        left_column: profile_v,
+        right_column: null,
+        full_column: null,
+      },
+      beforeEnter: (to, from, next) => {
+        if (isLoggedIn()) {
+          next();
+        } else {
+          next('/login');
+        }
       }
     },
     {
@@ -34,7 +64,21 @@ const router = new VueRouter({
         left_column: null,
         right_column: null,
         full_column: null,
+      },
+      beforeEnter: (to, from, next) => {
+        if (isLoggedIn()) {
+          next();
+        } else {
+          next('/login');
+        }
       }
     }
   ]
 });
+
+function isLoggedIn() {
+  FB.getLoginStatus(function (response) {
+    console.log(response.status);
+    return response.status === 'connected';
+  });
+}

@@ -65,3 +65,49 @@ const question_v = Vue.component('question-v', {
     </div>\
   </div>'
 });
+
+const login_v = Vue.component('register-v', {
+  template: '\
+    <div class="fb-login-button" data-width="300" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></div>',
+  created: function () {
+    console.log('runssss');
+
+    FB.init({
+      appId: '165030204297606',
+      autoLogAppEvents: true,
+      xfbml: true,
+      version: 'v2.12'
+    });
+
+    FB.AppEvents.logPageView();
+
+    let login_event = function (response) {
+      console.log('runs!!!');
+      FB.api('/me?fields=name,id', function (response) {
+        app.name = response.name;
+        app.picture = "https://graph.facebook.com/" + response.id + "/picture?type=large";
+        router.push('/');
+      });
+    };
+
+    FB.Event.subscribe('auth.login', login_event);
+  }
+});
+
+const profile_v = Vue.component('profile-v', {
+  data: function () {
+    return {
+      app: {}
+    }
+  },
+  created: function () {
+    this.app = this.$router.app;
+  },
+  template: '\
+  <div class="profile-v">\
+    <section>\
+      <h2>{{ app.name }}</h2>\
+      <img :src="app.picture" alt="">\
+    </section>\
+  </div>'
+});
