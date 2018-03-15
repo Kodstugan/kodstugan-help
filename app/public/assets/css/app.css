@@ -60,8 +60,13 @@ h2 {
 }
 
 p {
+  font-size:   15px;
   opacity:     0.8;
   line-height: 1.5;
+}
+
+p.small {
+  font-size: 14px;
 }
 
 .button {
@@ -74,6 +79,10 @@ p {
   font-weight:     500;
   border-radius:   30px;
   margin-top:      30px;
+}
+
+.button:hover {
+  cursor: pointer;
 }
 
 section {
@@ -142,4 +151,63 @@ section {
   background: #6ABC1C;
   color:      #fff;
   padding:    10px 20px;
+}
+
+/* menu-v */
+
+.menu-v {
+  width:    100%;
+  color:    #fff;
+  overflow: hidden;
+}
+
+.menu-v ul {
+  float:      right;
+  list-style: none;
+  padding:    20px 0 20px;
+}
+
+.menu-v ul li {
+  float:       left;
+  margin-left: 20px;
+}
+
+.menu-v p, .menu-v a {
+  line-height: 30px;
+}
+
+.menu-v a {
+  font-size:       16px;
+  color:           inherit;
+  text-decoration: none;
+}
+
+.menu-v img {
+  width:         30px;
+  border-radius: 50%;
+  margin-left:   20px;
+}
+
+/* new-v */
+
+.new-v textarea {
+  margin-top:  20px;
+  width:       100%;
+  max-width:   100%;
+  min-width:   100%;
+  min-height:  200px;
+  border:      1px solid rgba(0, 0, 0, 0.25);
+  padding:     20px;
+  font-size:   16px;
+  line-height: 1.5;
+}
+
+.new-v select {
+  margin-top: 20px;
+  font-size:  16px;
+}
+
+.new-v .message {
+  text-align: center;
+  margin-top: 30px;
 }

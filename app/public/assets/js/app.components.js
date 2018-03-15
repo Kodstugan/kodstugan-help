@@ -51,7 +51,7 @@ const question_list_v = Vue.component('question-list-v', {
   </div>'
 });
 
-const question_v = Vue.component('question-v', {
+Vue.component('question-v', {
   props: ['question', 'id'],
   template: '\
   <div class="question-v">\
@@ -66,35 +66,7 @@ const question_v = Vue.component('question-v', {
   </div>'
 });
 
-const login_v = Vue.component('register-v', {
-  template: '\
-    <div class="fb-login-button" data-width="300" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></div>',
-  created: function () {
-    console.log('runssss');
-
-    FB.init({
-      appId: '165030204297606',
-      autoLogAppEvents: true,
-      xfbml: true,
-      version: 'v2.12'
-    });
-
-    FB.AppEvents.logPageView();
-
-    let login_event = function (response) {
-      console.log('runs!!!');
-      FB.api('/me?fields=name,id', function (response) {
-        app.name = response.name;
-        app.picture = "https://graph.facebook.com/" + response.id + "/picture?type=large";
-        router.push('/');
-      });
-    };
-
-    FB.Event.subscribe('auth.login', login_event);
-  }
-});
-
-const profile_v = Vue.component('profile-v', {
+const menu_v = Vue.component('menu-v', {
   data: function () {
     return {
       app: {}
@@ -104,10 +76,58 @@ const profile_v = Vue.component('profile-v', {
     this.app = this.$router.app;
   },
   template: '\
-  <div class="profile-v">\
-    <section>\
-      <h2>{{ app.name }}</h2>\
-      <img :src="app.picture" alt="">\
-    </section>\
+  <div class="menu-v">\
+    <ul>\
+      <li><router-link to="/">Start</router-link></li>\
+      <li><router-link to="/new">Ställ en fråga</router-link></li>\
+      <li><img :src="app.picture" alt=""></li>\
+      <li><p>{{ app.name }}</p></li>\
+    </ul>\
   </div>'
+});
+
+const new_v = Vue.component('new-v', {
+  data: function () {
+    return {
+      app: {}
+    }
+  },
+  created: function () {
+    this.app = this.$router.app;
+  },
+  template: '\
+  <div class="new-v">\
+    <section>\
+      <h1>Ställ en fråga</h1>\
+      <p>\
+        Nedanför kan du ställa en fråga, försök att förklara tydligt vad du har problem med. Ange din plats så kommer någon att hjälpa dig.\
+      </p>\
+      <select v-model="app.question.location" v-if="!app.misc.disabled">\
+        <option value="Rummet vid kassan">Rummet vid kassan</option>\
+        <option value="Rummet vid kassan">Rummet vid kassan</option>\
+        <option value="Rummet vid kassan">Rummet vid kassan</option>\
+      </select>\
+      <textarea v-model="app.question.message" maxlength="400" v-if="!app.misc.disabled"></textarea>\
+      <p class="small" v-if="!app.misc.disabled">{{ app.characters }} (20) / 400</p>\
+      <p class="message" v-if="app.misc.message.length > 0">{{ app.misc.message }}</p>\
+      <a class="button gradient" @click="send" v-if="!app.misc.disabled">Skicka</a>\
+      <a class="button gradient" @click="reset" v-if="app.misc.disabled">Ställ en ny fråga</a>\
+    </section>\
+  </div>',
+  methods: {
+    send: function () {
+      if (app.question.message.length < 20) {
+        app.misc.message = 'För kort text.';
+      } else {
+        app.misc.disabled = true;
+        app.misc.message = 'Fråga skickad!';
+      }
+    },
+    reset: function () {
+      app.question.message = '';
+
+      app.misc.message = '';
+      app.misc.disabled = false;
+    }
+  }
 });
