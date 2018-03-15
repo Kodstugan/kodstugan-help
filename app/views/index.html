@@ -12,12 +12,14 @@
   <script src="/assets/js/app.components.js" defer></script>
   <script src="/assets/js/app.router.js" defer></script>
   <script src="/assets/js/app.methods.js" defer></script>
+  <script src="/assets/js/app.computed.js" defer></script>
   <script src="/assets/js/app.created.js" defer></script>
   <script src="/assets/js/app.data.js" defer></script>
   <script src="/assets/js/app.js" defer></script>
 </head>
 <body>
 <div id="app">
+  <router-view class="menu" name="menu"></router-view>
   <router-view class="left-column" name="left_column"></router-view>
   <router-view class="full-column" name="full_column"></router-view>
   <router-view class="right-column" name="right_column"></router-view>

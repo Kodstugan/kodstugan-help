@@ -7,8 +7,6 @@ const app = new Vue({
   el: '#app',
   data: data,
   created: created,
-  methods: methods
+  methods: methods,
+  computed: computed
 });
-
-
-

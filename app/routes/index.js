@@ -1,7 +1,19 @@
 "use strict";
 
-module.exports = function (app, path) {
+module.exports = function (app, path, passport) {
+  app.get('/auth/facebook/success',
+    passport.authenticate('facebook', {
+      successRedirect: '/',
+      failureRedirect: '/failed'
+    }));
+
+  app.get('/auth/facebook', passport.authenticate('facebook'));
+
   app.all('*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../views/index.html'));
+    if (req.user) {
+      res.sendFile(path.join(__dirname, '../views/index.html'));
+    } else {
+      res.redirect('/auth/facebook');
+    }
   });
 };
