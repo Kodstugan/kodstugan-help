@@ -48,7 +48,7 @@ const question_list_v = Vue.component('question-list-v', {
   <div class="question-list-v gradient">\
     <h1>Hjälplistan</h1>\
     <question-v v-for="(question, key) in app.questions" :question="question" :key="key" :id="key"></question-v>\
-  </div>'
+  </div>',
 });
 
 Vue.component('question-v', {
@@ -102,8 +102,8 @@ const new_v = Vue.component('new-v', {
       <p>\
         Nedanför kan du ställa en fråga, försök att förklara tydligt vad du har problem med. Ange din plats så kommer någon att hjälpa dig.\
       </p>\
-      <textarea v-model="app.question.message" maxlength="400" v-if="!app.misc.disabled"></textarea>\
-      <p class="small" v-if="!app.misc.disabled">{{ app.characters }} (20) / 400</p>\
+      <textarea v-model="app.question.message" maxlength="200" v-if="!app.misc.disabled"></textarea>\
+      <p class="small" v-if="!app.misc.disabled">{{ app.characters }} (20) / 200</p>\
       <p class="message" v-if="app.misc.message.length > 0">{{ app.misc.message }}</p>\
       <a class="button gradient" @click="send" v-if="!app.misc.disabled">Skicka</a>\
       <a class="button gradient" @click="reset" v-if="app.misc.disabled">Ställ en ny fråga</a>\
@@ -113,7 +113,12 @@ const new_v = Vue.component('new-v', {
     send: function () {
       if (app.question.message.length < 20) {
         app.misc.message = 'För kort text.';
-      } else {
+      } else if (app.misc.cool_down > 0) {
+        app.misc.message = 'Du skickar frågor för ofta, du kan skicka om ' + app.misc.cool_down + ' sekunder.';
+      }
+      else {
+        app.misc.cool_down = 60;
+        app.countdown();
         app.misc.disabled = true;
         app.misc.message = 'Fråga skickad!';
         this.questionAdd();

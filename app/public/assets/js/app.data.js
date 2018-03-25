@@ -5,7 +5,8 @@ const data = {
   picture: '',
   misc: {
     disabled: false,
-    message: ''
+    message: '',
+    cool_down: 0
   },
   question: {
     message: ''
