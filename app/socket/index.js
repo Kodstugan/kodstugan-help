@@ -1,16 +1,30 @@
 "use strict";
 
 module.exports = function (app, io) {
-  io.on('connection', function (socket) {
-    socket.emit('client/onLogin', {id: socket.request.user.id, name: socket.request.user.displayName});
+  let questions = {};
+  let counter = -1;
 
-    socket.on('client/question-add', function (message) {
+  io.on('connection', function (socket) {
+    socket.emit('client/onLogin', {
+      id: socket.request.user.id,
+      name: socket.request.user.displayName,
+      questions: questions
     });
-    socket.on('client/question-del', function (message) {
+
+    socket.on('client/questionAdd', function (data) {
+      counter++;
+      const key = counter;
+
+      Vue.set(questions, key, data.question);
+      io.emit('client/onQuestionAdd', {key: key, question: data.question});
     });
-    socket.on('client/question-comment-add', function (message) {
-    });
-    socket.on('client/question-comment-del', function (message) {
+
+    socket.on('client/questionRemove', function (data) {
+      counter++;
+      const key = counter;
+
+      Vue.delete(questions, data.key);
+      io.emit('client/onQuestionRemove', {key: key});
     });
   });
 };

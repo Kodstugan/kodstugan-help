@@ -1,11 +1,12 @@
 "use strict";
 
 const created = function () {
-  // on - async events
+  // on
 
   socket.on('client/onLogin', function (data) {
     app.name = data.name;
     app.picture = "https://graph.facebook.com/" + data.id + "/picture?type=large";
+    app.questions = data.questions;
   });
 
   socket.on('client/onQuestionAdd', function (data) {
@@ -17,12 +18,13 @@ const created = function () {
     Vue.delete(app.questions, data.key);
   });
 
-  // getters
-
-  socket.on('client/getQuestions', function (data) {
-    app.questions = data.questions;
-  });
-
   // setters
 
+  function questionAdd(question) {
+    socket.emit('client/questionAdd', {question: question});
+  }
+
+  function questionRemove(key) {
+    socket.emit('client/questionRemove', {key: key});
+  }
 };
