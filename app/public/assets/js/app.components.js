@@ -114,7 +114,7 @@ const new_v = Vue.component('new-v', {
     <section>\
       <h1>Ställ en fråga</h1>\
       <p>\
-        Nedanför kan du ställa en fråga, försök att förklara tydligt vad du har problem med. Ange din plats så kommer någon att hjälpa dig.\
+        Nedanför kan du ställa en fråga, försök att förklara tydligt vad du har problem med.\
       </p>\
       <textarea v-model="app.question.message" maxlength="200" v-if="!app.misc.disabled"></textarea>\
       <p class="small" v-if="!app.misc.disabled">{{ app.characters }} (20) / 200</p>\
