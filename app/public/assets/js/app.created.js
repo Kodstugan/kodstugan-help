@@ -20,7 +20,13 @@ const created = function () {
 
   // setters
 
-  function questionAdd(question) {
+  function questionAdd(message) {
+    const question = {
+      message: message,
+      name: app.name,
+      picture: app.picture
+    };
+
     socket.emit('client/questionAdd', {question: question});
   }
 
