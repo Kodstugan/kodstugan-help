@@ -56,12 +56,12 @@ Vue.component('question-v', {
   template: '\
   <div class="question-v">\
     <div class="left-column">\
-      <img :src="question.image_url" alt="">\
+      <img :src="question.picture" alt="">\
     </div>\
     <div class="right-column">\
-      <p class="name">{{ question.first_name }} {{ question.last_name }}</p>\
+      <p class="name">{{ question.name }}</p>\
       <p class="message">{{ question.message }}</p>\
-      <router-link :to="{ name: \'question\', params: { id: id }}" class="button">Hjälp {{ question.first_name }}</router-link>\
+      <router-link :to="{ name: \'question\', params: { id: id }}" class="button">Hjälp {{ question.name }}</router-link>\
     </div>\
   </div>'
 });
@@ -102,11 +102,6 @@ const new_v = Vue.component('new-v', {
       <p>\
         Nedanför kan du ställa en fråga, försök att förklara tydligt vad du har problem med. Ange din plats så kommer någon att hjälpa dig.\
       </p>\
-      <select v-model="app.question.location" v-if="!app.misc.disabled">\
-        <option value="Rummet vid kassan">Rummet vid kassan</option>\
-        <option value="Rummet vid kassan">Rummet vid kassan</option>\
-        <option value="Rummet vid kassan">Rummet vid kassan</option>\
-      </select>\
       <textarea v-model="app.question.message" maxlength="400" v-if="!app.misc.disabled"></textarea>\
       <p class="small" v-if="!app.misc.disabled">{{ app.characters }} (20) / 400</p>\
       <p class="message" v-if="app.misc.message.length > 0">{{ app.misc.message }}</p>\
@@ -121,6 +116,7 @@ const new_v = Vue.component('new-v', {
       } else {
         app.misc.disabled = true;
         app.misc.message = 'Fråga skickad!';
+        this.questionAdd();
       }
     },
     reset: function () {
@@ -128,6 +124,15 @@ const new_v = Vue.component('new-v', {
 
       app.misc.message = '';
       app.misc.disabled = false;
+    },
+    questionAdd: function () {
+      const question = {
+        message: app.question.message,
+        name: app.name,
+        picture: app.picture
+      };
+
+      socket.emit('client/questionAdd', {question: question});
     }
   }
 });

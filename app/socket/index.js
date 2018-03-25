@@ -12,19 +12,22 @@ module.exports = function (app, io) {
     });
 
     socket.on('client/questionAdd', function (data) {
-      counter++;
-      const key = counter;
+      const key = counterNext();
 
-      Vue.set(questions, key, data.question);
+      questions[key] = data.question;
       io.emit('client/onQuestionAdd', {key: key, question: data.question});
     });
 
     socket.on('client/questionRemove', function (data) {
-      counter++;
-      const key = counter;
+      const index = questions.indexOf(data.key);
+      questions.splice(index, 1);
 
-      Vue.delete(questions, data.key);
-      io.emit('client/onQuestionRemove', {key: key});
+      io.emit('client/onQuestionRemove', {key: data.key});
     });
   });
+
+  function counterNext() {
+    counter++;
+    return counter;
+  }
 };
