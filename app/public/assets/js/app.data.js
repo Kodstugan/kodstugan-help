@@ -1,12 +1,13 @@
 "use strict";
 
 const data = {
+  id: null,
   name: '',
   picture: '',
   misc: {
     disabled: false,
     message: '',
-    cool_down: 0
+    canPost: false
   },
   question: {
     message: ''

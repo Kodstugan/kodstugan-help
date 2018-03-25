@@ -52,6 +52,14 @@ const question_list_v = Vue.component('question-list-v', {
 });
 
 Vue.component('question-v', {
+  data: function () {
+    return {
+      app: {}
+    }
+  },
+  created: function () {
+    this.app = this.$router.app;
+  },
   props: ['question', 'id'],
   template: '\
   <div class="question-v">\
@@ -62,8 +70,14 @@ Vue.component('question-v', {
       <p class="name">{{ question.name }}</p>\
       <p class="message">{{ question.message }}</p>\
       <router-link :to="{ name: \'question\', params: { id: id }}" class="button">Hjälp {{ question.name }}</router-link>\
+      <a v-if="question.id === app.id" @click="questionRemove" class="button">Ta bort fråga</a>\
     </div>\
-  </div>'
+  </div>',
+  methods: {
+    questionRemove: function () {
+      socket.emit('client/questionRemove', {key: this.id});
+    }
+  }
 });
 
 const menu_v = Vue.component('menu-v', {
@@ -113,12 +127,11 @@ const new_v = Vue.component('new-v', {
     send: function () {
       if (app.question.message.length < 20) {
         app.misc.message = 'För kort text.';
-      } else if (app.misc.cool_down > 0) {
-        app.misc.message = 'Du skickar frågor för ofta, du kan skicka om ' + app.misc.cool_down + ' sekunder.';
+      } else if (!app.misc.canPost) {
+        app.misc.message = 'Du skickar frågor för ofta, vänta lite.';
       }
       else {
-        app.misc.cool_down = 60;
-        app.countdown();
+        app.misc.canPost = false;
         app.misc.disabled = true;
         app.misc.message = 'Fråga skickad!';
         this.questionAdd();
@@ -132,12 +145,14 @@ const new_v = Vue.component('new-v', {
     },
     questionAdd: function () {
       const question = {
+        id: app.id,
         message: app.question.message,
         name: app.name,
         picture: app.picture
       };
 
       socket.emit('client/questionAdd', {question: question});
+      socket.emit('client/cooldownAdd', {id: app.id});
     }
   }
 });
