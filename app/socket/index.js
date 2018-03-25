@@ -2,7 +2,7 @@
 
 module.exports = function (app, io) {
   io.on('connection', function (socket) {
-    socket.emit('client/update-info', {id: socket.request.user.id, name: socket.request.user.displayName});
+    socket.emit('client/onLogin', {id: socket.request.user.id, name: socket.request.user.displayName});
 
     socket.on('client/question-add', function (message) {
     });
