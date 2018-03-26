@@ -70,7 +70,7 @@ Vue.component('question-v', {
       <p class="name">{{ question.name }}</p>\
       <p class="message">{{ question.message }}</p>\
       <router-link :to="{ name: \'question\', params: { id: id }}" class="button">Hjälp {{ question.name }}</router-link>\
-      <a v-if="question.id === app.id" @click="questionRemove" class="button">Ta bort fråga</a>\
+      <a v-if="question.id === app.id" @click="questionRemove" class="remove">x</a>\
     </div>\
   </div>',
   methods: {
