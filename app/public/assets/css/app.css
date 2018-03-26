@@ -116,6 +116,7 @@ section {
   width:         100%;
   overflow:      hidden;
   margin-bottom: 30px;
+  position:      relative;
 }
 
 .question-v:last-child {
@@ -147,7 +148,9 @@ section {
 }
 
 .question-v .message {
-  color: #fff;
+  color:         #fff;
+  padding-right: 50px;
+  word-break:    break-all;
 }
 
 .question-v .button {
@@ -157,6 +160,19 @@ section {
   background: #6ABC1C;
   color:      #fff;
   padding:    10px 20px;
+}
+
+.question-v .remove {
+  font-size: 20px;
+  position:  absolute;
+  top:       16px;
+  right:     0;
+  cursor:    pointer;
+}
+
+.question-v .remove img {
+  width:  20px;
+  height: 20px;
 }
 
 /* menu-v */

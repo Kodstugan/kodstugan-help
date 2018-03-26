@@ -19,7 +19,7 @@ const about_v = Vue.component('about-v', {
     <section>\
       <h1>Vad är detta?</h1>\
       <p>\
-        Du har kommit till Kodstugans hemsida. Vi sitter varje Onsdag i Datavetarnas cafeteria och kodar.\
+        Du har kommit till Kodstugans hjälplista. Vi sitter varje Onsdag i Datavetarnas cafeteria och kodar.\
         Det spelar ingen roll om du är Java master eller nybörjare, alla är välkomna!\
         <br/>\
         <br/>\
@@ -70,7 +70,7 @@ Vue.component('question-v', {
       <p class="name">{{ question.name }}</p>\
       <p class="message">{{ question.message }}</p>\
       <router-link :to="{ name: \'question\', params: { id: id }}" class="button">Hjälp {{ question.name }}</router-link>\
-      <a v-if="question.id === app.id" @click="questionRemove" class="remove">x</a>\
+      <a v-if="question.id === app.id" @click="questionRemove" class="remove"><img src="assets/images/delete.svg"></a>\
     </div>\
   </div>',
   methods: {
@@ -116,8 +116,8 @@ const new_v = Vue.component('new-v', {
       <p>\
         Nedanför kan du ställa en fråga, försök att förklara tydligt vad du har problem med.\
       </p>\
-      <textarea v-model="app.question.message" maxlength="200" v-if="!app.misc.disabled"></textarea>\
-      <p class="small" v-if="!app.misc.disabled">{{ app.characters }} (20) / 200</p>\
+      <textarea v-model="app.question.message" maxlength="100" v-if="!app.misc.disabled"></textarea>\
+      <p class="small" v-if="!app.misc.disabled">{{ app.characters }} (20) / 100</p>\
       <p class="message" v-if="app.misc.message.length > 0">{{ app.misc.message }}</p>\
       <a class="button gradient" @click="send" v-if="!app.misc.disabled">Skicka</a>\
       <a class="button gradient" @click="reset" v-if="app.misc.disabled">Ställ en ny fråga</a>\
