@@ -114,7 +114,7 @@ Vue.component('question-v', {
     <div class="right-column">\
       <p class="name">{{ question.name }}</p>\
       <p class="message">{{ question.message }}</p>\
-      <router-link :to="{ name: \'question\', params: { id: id }}" class="button green">Hjälp {{ question.name }}</router-link>\
+      <router-link :to="{ name: \'question\', params: { id: id }}" class="button green">Läs mer</router-link>\
       <a v-if="question.id === app.id" @click="questionRemove" class="remove"><img src="assets/images/delete.svg"></a>\
     </div>\
   </div>',
@@ -123,6 +123,27 @@ Vue.component('question-v', {
       socket.emit('client/questionRemove', {key: this.id});
     }
   }
+});
+
+const question_full_v = Vue.component('question-full-v', {
+  data: function () {
+    return {
+      app: {},
+      id: null
+    }
+  },
+  created: function () {
+    this.app = this.$router.app;
+    this.id = this.$route.params.id;
+  },
+  template: '\
+  <div class="question-full-v gradient">\
+    <h1>Fråga #{{ id }}</h1>\
+    <img :src="app.questions[id].picture">\
+    <p class="name">{{ app.questions[id].name }}</p>\
+    <p class="message">{{ app.questions[id].message }}</p>\
+    <a class="button green">Hjälp {{ app.questions[id].name }}</a>\
+  </div>',
 });
 
 const menu_v = Vue.component('menu-v', {

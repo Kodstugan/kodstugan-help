@@ -37,7 +37,7 @@ const router = new VueRouter({
         menu: menu_v,
         left_column: null,
         right_column: null,
-        full_column: null,
+        full_column: question_full_v,
       }
     },
     {

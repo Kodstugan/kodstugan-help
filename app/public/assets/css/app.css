@@ -148,7 +148,7 @@ section {
   border-radius: 50%;
 }
 
-.question-v .name {
+.question-v .name, .question-full-v .name {
   opacity:     1;
   font-weight: 500;
   margin-top:  4px;
@@ -258,4 +258,35 @@ section {
 
 .me-v .question-v {
   color: #000;
+}
+
+/* question-full-v */
+
+.question-full-v {
+  padding:    60px 30px;
+  text-align: center;
+  color:      #fff;
+}
+
+.question-full-v img {
+  width:         70px;
+  border-radius: 50%;
+  margin:        20px 0 20px 0;
+}
+
+.question-full-v .name {
+  font-size:     24px;
+  margin-bottom: 10px;
+}
+
+.question-full-v .message {
+  max-width: 600px;
+  margin:    0 auto;
+  font-size: 18px;
+}
+
+.question-full-v .button {
+  width:   auto;
+  display: inline-block;
+  padding: 10px 20px;
 }
