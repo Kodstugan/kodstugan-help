@@ -18,6 +18,14 @@ body {
   overflow:   auto;
 }
 
+.red {
+  background: #D0512D;
+}
+
+.green {
+  background: #6ABC1C;
+}
+
 #app {
   width:     100%;
   max-width: 1024px;
@@ -143,12 +151,10 @@ section {
 .question-v .name {
   opacity:     1;
   font-weight: 500;
-  color:       #fff;
   margin-top:  4px;
 }
 
 .question-v .message {
-  color:         #fff;
   padding-right: 50px;
   word-break:    break-all;
 }
@@ -157,7 +163,6 @@ section {
   width:      auto;
   display:    inline-block;
   margin-top: 15px;
-  background: #6ABC1C;
   color:      #fff;
   padding:    10px 20px;
 }
@@ -236,4 +241,21 @@ section {
 .new-v .message {
   text-align: center;
   margin-top: 30px;
+}
+
+/* me-v */
+
+.me-v {
+  background: #fff;
+  padding:    30px;
+  overflow:   hidden;
+}
+
+.me-v .bread {
+  font-size:     18px;
+  margin-bottom: 30px;
+}
+
+.me-v .question-v {
+  color: #000;
 }

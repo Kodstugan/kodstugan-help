@@ -18,6 +18,11 @@ module.exports = function (app, io) {
 
       questions[key] = data.question;
       io.emit('client/onQuestionAdd', {key: key, question: data.question});
+
+      setTimeout(function () {
+        delete questions[key];
+        io.emit('client/onQuestionRemove', {key: key});
+      }, 60 * 60 * 1000);
     });
 
     socket.on('client/questionRemove', function (data) {

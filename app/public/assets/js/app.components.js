@@ -35,6 +35,51 @@ const about_v = Vue.component('about-v', {
   </div>'
 });
 
+const me_v = Vue.component('me-v', {
+  data: function () {
+    return {
+      app: {}
+    }
+  },
+  created: function () {
+    this.app = this.$router.app;
+  },
+  template: '\
+  <div class="me-v">\
+    <h1>{{ app.name }}</h1>\
+    <p class="bread">Det här är din profil, nedanför kan du se alla frågor du har ställt.</p>\
+    <me-question-v v-for="(question, key) in app.questions" :question="question" :key="key" :id="key" v-if="question.id === app.id"></me-question-v>\
+  </div>',
+});
+
+Vue.component('me-question-v', {
+  data: function () {
+    return {
+      app: {}
+    }
+  },
+  created: function () {
+    this.app = this.$router.app;
+  },
+  props: ['question', 'id'],
+  template: '\
+  <div class="question-v">\
+    <div class="left-column">\
+      <img :src="question.picture" alt="">\
+    </div>\
+    <div class="right-column">\
+      <p class="name">{{ question.name }}</p>\
+      <p class="message">{{ question.message }}</p>\
+      <a v-if="question.id === app.id" @click="questionRemove" class="button red">Ta bort fråga</a>\
+    </div>\
+  </div>',
+  methods: {
+    questionRemove: function () {
+      socket.emit('client/questionRemove', {key: this.id});
+    }
+  }
+});
+
 const question_list_v = Vue.component('question-list-v', {
   data: function () {
     return {
@@ -69,7 +114,7 @@ Vue.component('question-v', {
     <div class="right-column">\
       <p class="name">{{ question.name }}</p>\
       <p class="message">{{ question.message }}</p>\
-      <router-link :to="{ name: \'question\', params: { id: id }}" class="button">Hjälp {{ question.name }}</router-link>\
+      <router-link :to="{ name: \'question\', params: { id: id }}" class="button green">Hjälp {{ question.name }}</router-link>\
       <a v-if="question.id === app.id" @click="questionRemove" class="remove"><img src="assets/images/delete.svg"></a>\
     </div>\
   </div>',
@@ -94,8 +139,8 @@ const menu_v = Vue.component('menu-v', {
     <ul>\
       <li><router-link to="/">Start</router-link></li>\
       <li><router-link to="/new">Ställ en fråga</router-link></li>\
-      <li><img :src="app.picture" alt=""></li>\
-      <li><p>{{ app.name }}</p></li>\
+      <li><router-link to="/me"><img :src="app.picture" alt=""></router-link></li>\
+      <li><router-link to="/me"><p>{{ app.name }}</p></router-link></li>\
     </ul>\
   </div>'
 });
