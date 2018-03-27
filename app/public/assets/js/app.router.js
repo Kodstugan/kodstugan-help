@@ -37,6 +37,15 @@ const router = new VueRouter({
         menu: menu_v,
         left_column: null,
         right_column: null,
+        full_column: question_full_v,
+      }
+    },
+    {
+      path: '/me',
+      components: {
+        menu: menu_v,
+        left_column: me_v,
+        right_column: question_list_v,
         full_column: null,
       }
     }
