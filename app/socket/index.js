@@ -22,7 +22,7 @@ module.exports = function (app, io) {
       setTimeout(function () {
         delete questions[key];
         io.emit('client/onQuestionRemove', {key: key});
-      }, 60 * 60 * 1000);
+      }, 24 * 60 * 60 * 1000);
     });
 
     socket.on('client/questionRemove', function (data) {
