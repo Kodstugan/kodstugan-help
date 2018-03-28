@@ -61,6 +61,11 @@ module.exports = function (app, io) {
         cooldowns.splice(index, 1);
         socket.emit('client/onCooldownRemove');
       }, 10 * 1000);
+    });
+
+    socket.on('client/questionSolved', function (data) {
+      questions[data.key].solved = true;
+      io.emit('client/onQuestionAdd', {key: data.key, question: questions[data.key]});
     })
   });
 
