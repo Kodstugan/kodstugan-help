@@ -27,6 +27,10 @@ body {
   background: #6ABC1C;
 }
 
+.purple {
+  background: #309BF7;
+}
+
 #app {
   width:     100%;
   max-width: 1024px;
@@ -78,6 +82,17 @@ p {
 
 p.small {
   font-size: 14px;
+}
+
+p.warning {
+  background: red;
+  opacity:    1;
+  padding:    5px 0;
+}
+
+p.success {
+  opacity: 1;
+  padding: 5px 0;
 }
 
 .button {
@@ -326,4 +341,35 @@ section {
   right:    20px;
   bottom:   20px;
   margin:   0;
+}
+
+.question-full-v .comments {
+  margin-top:  40px;
+  line-height: 2;
+  padding:     0 0 0 20px;
+  list-style:  none;
+  text-align:  left;
+  border-top:  1px solid rgba(255, 255, 255, 0.25);
+}
+
+.question-full-v .comments li {
+  position:      relative;
+  padding:       20px 0 20px 40px;
+  line-height:   1.5;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.question-full-v .comments span {
+  font-weight: 500;
+}
+
+.question-full-v .comments .remove {
+  position: absolute;
+  top:      21px;
+  left:     0;
+}
+
+.question-full-v .comments .remove img {
+  width:  20px;
+  margin: 0;
 }

@@ -10,7 +10,7 @@ module.exports = function (app, io) {
       id: socket.request.user.id,
       name: socket.request.user.displayName,
       questions: questions,
-      canPost: canPost(socket.request.user.id)
+      cooldown: hasCooldown(socket.request.user.id)
     });
 
     socket.on('client/questionAdd', function (data) {
@@ -31,7 +31,21 @@ module.exports = function (app, io) {
     });
 
     socket.on('client/commentAdd', function (data) {
+      if (questions[data.key].comments === undefined) {
+        questions[data.key].comments = {};
+        questions[data.key].comments[counterNext()] = data.comment;
+      } else {
+        questions[data.key].comments[counterNext()] = data.comment;
+      }
 
+      io.emit('client/onQuestionAdd', {key: data.key, question: questions[data.key]});
+    });
+
+    socket.on('client/commentRemove', function (data) {
+      if (questions[data.key].comments !== undefined) {
+        delete questions[data.key].comments[data.ckey];
+        io.emit('client/onQuestionAdd', {key: data.key, question: questions[data.key]});
+      }
     });
 
     socket.on('client/cooldownAdd', function (data) {
@@ -46,7 +60,7 @@ module.exports = function (app, io) {
         const index = cooldowns.findIndex(x => x.id === data.id);
         cooldowns.splice(index, 1);
         socket.emit('client/onCooldownRemove');
-      }, 60 * 1000);
+      }, 10 * 1000);
     })
   });
 
@@ -55,7 +69,7 @@ module.exports = function (app, io) {
     return counter;
   }
 
-  function canPost(id) {
-    return (cooldowns.find(x => x.id === id) === undefined);
+  function hasCooldown(id) {
+    return !(cooldowns.find(x => x.id === id) === undefined);
   }
 };

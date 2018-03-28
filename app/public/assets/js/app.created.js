@@ -2,11 +2,11 @@
 
 const created = function () {
   socket.on('client/onLogin', function (data) {
-    app.id = data.id;
-    app.name = data.name;
-    app.picture = "https://graph.facebook.com/" + data.id + "/picture?type=large";
-    app.questions = data.questions;
-    app.misc.canPost = data.canPost;
+    store.setId(data.id);
+    store.setName(data.name);
+    store.setPicture("https://graph.facebook.com/" + data.id + "/picture?type=large");
+    store.setQuestions(data.questions);
+    store.setCooldown(data.cooldown);
   });
 
   socket.on('client/onQuestionAdd', function (data) {
@@ -18,6 +18,6 @@ const created = function () {
   });
 
   socket.on('client/onCooldownRemove', function (data) {
-    app.misc.canPost = true;
+    store.setCooldown(false);
   });
 };

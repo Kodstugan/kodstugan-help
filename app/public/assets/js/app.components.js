@@ -38,17 +38,14 @@ const about_v = Vue.component('about-v', {
 const me_v = Vue.component('me-v', {
   data: function () {
     return {
-      app: {}
+      shared: store.state
     }
-  },
-  created: function () {
-    this.app = this.$router.app;
   },
   template: '\
   <div class="me-v">\
-    <h1>{{ app.name }}</h1>\
+    <h1>{{ shared.name }}</h1>\
     <p class="bread">Det här är din profil, nedanför kan du se alla frågor du har ställt.</p>\
-    <me-question-v v-for="(question, key) in app.questions" :question="question" :key="key" :id="key" v-if="question.id === app.id"></me-question-v>\
+    <me-question-v v-for="(question, key) in shared.questions" :question="question" :key="key" :id="key" v-if="question.id === shared.id"></me-question-v>\
   </div>',
 });
 
@@ -115,6 +112,7 @@ Vue.component('question-v', {
       <p class="name">{{ question.name }}</p>\
       <p class="message">{{ question.message }}</p>\
       <router-link :to="{ name: \'question\', params: { id: id }}" class="button green">Läs mer</router-link>\
+      <router-link :to="{ name: \'question\', params: { id: id }}" class="button purple">{{ question.comments === undefined ? 0 : Object.keys(question.comments).length }}</router-link>\
       <a v-if="question.id === app.id" @click="questionRemove" class="remove"><img src="assets/images/delete.svg"></a>\
     </div>\
   </div>',
@@ -126,54 +124,80 @@ Vue.component('question-v', {
 });
 
 const question_full_v = Vue.component('question-full-v', {
-  props: ['app'],
+  props: ['id'],
   data: function () {
     return {
-      id: null,
-      question: {}
-    }
-  },
-  mounted: function () {
-    this.id = this.$route.params.id;
-  },
-  beforeUpdate: function () {
-    let question = this.app.questions[this.id];
-
-    if (question !== undefined) {
-      this.question = question;
+      message: '',
+      warning: '',
+      shared: store.state
     }
   },
   template: '\
   <div class="question-full-v gradient">\
     <h1>Fråga #{{ id }}</h1>\
-    <img :src="question.picture">\
-    <p class="name">{{ question.name }}</p>\
-    <p class="message">{{ question.message }}</p>\
-    <a class="button green" v-if="question.id === app.id">Markera som löst</a>\
-    <div class="comment-area">\
-    <img :src="question.picture">\
-    <textarea class="comment" maxlength="200" placeholder="Skriv en kommentar"></textarea>\
-    <a class="button green">Skicka</a>\
-    </div>\
+    <template v-if="shared.questions[id] !== undefined">\
+      <img :src="shared.questions[id].picture">\
+      <p class="name">{{ shared.questions[id].name }}</p>\
+      <p class="message">{{ shared.questions[id].message }}</p>\
+      <a class="button green" v-if="shared.questions[id].id === shared.id">Markera som löst</a>\
+      <ul class="comments" v-if="shared.questions[id].comments !== undefined">\
+      <li v-for="(comment, key) in shared.questions[id].comments">\
+        <span><span v-if="shared.questions[id].id === shared.id">👑</span> {{ comment.name }}</span>: {{ comment.message }} <a v-if="shared.questions[id].id === shared  .id"\
+        @click="commentRemove(key)" class="remove"><img src="/assets/images/delete.svg"></a>\
+      </li>\
+      </ul>\
+      <div class="comment-area">\
+        <img :src="shared.questions[id].picture">\
+        <textarea class="comment" maxlength="200" placeholder="Skriv en kommentar" v-model="message" @keydown.enter.exact.prevent\
+        @keyup.enter.exact="send"></textarea>\
+        <a class="button green" @click="send">Skicka</a>\
+      </div>\
+      <p class="warning" v-if="warning.length > 0">{{ warning }}</p>\
+    </template>\
   </div>',
+  methods: {
+    send: function () {
+      if (this.message.length < 10) {
+        this.warning = 'För kort text.';
+      } else if (this.shared.cooldown) {
+        this.warning = 'Du skickar frågor för ofta, vänta lite.';
+      }
+      else {
+        store.setCooldown(true);
+        this.warning = '';
+        this.commentAdd();
+        this.message = '';
+      }
+    },
+    commentAdd: function () {
+      const comment = {
+        name: this.shared.name,
+        picture: this.shared.picture,
+        message: this.message,
+      };
+
+      socket.emit('client/commentAdd', {key: this.id, comment: comment});
+      socket.emit('client/cooldownAdd', {id: this.shared.id});
+    },
+    commentRemove: function (ckey) {
+      socket.emit('client/commentRemove', {key: this.id, ckey: ckey})
+    }
+  }
 });
 
 const menu_v = Vue.component('menu-v', {
   data: function () {
     return {
-      app: {}
+      shared: store.state
     }
-  },
-  created: function () {
-    this.app = this.$router.app;
   },
   template: '\
   <div class="menu-v">\
     <ul>\
       <li><router-link to="/">Start</router-link></li>\
       <li><router-link to="/new">Ställ en fråga</router-link></li>\
-      <li><router-link to="/me"><img :src="app.picture" alt=""></router-link></li>\
-      <li><router-link to="/me"><p>{{ app.name }}</p></router-link></li>\
+      <li><router-link to="/me"><img :src="shared.picture" alt=""></router-link></li>\
+      <li><router-link to="/me"><p>{{ shared.name }}</p></router-link></li>\
     </ul>\
   </div>'
 });
@@ -181,11 +205,12 @@ const menu_v = Vue.component('menu-v', {
 const new_v = Vue.component('new-v', {
   data: function () {
     return {
-      app: {}
+      shared: store.state,
+      disabled: false,
+      message: '',
+      warning: '',
+      category: ''
     }
-  },
-  created: function () {
-    this.app = this.$router.app;
   },
   template: '\
   <div class="new-v">\
@@ -194,43 +219,50 @@ const new_v = Vue.component('new-v', {
       <p>\
         Nedanför kan du ställa en fråga, försök att förklara tydligt vad du har problem med.\
       </p>\
-      <textarea v-model="app.question.message" maxlength="100" v-if="!app.misc.disabled"></textarea>\
-      <p class="small" v-if="!app.misc.disabled">{{ app.characters }} (20) / 100</p>\
-      <p class="message" v-if="app.misc.message.length > 0">{{ app.misc.message }}</p>\
-      <a class="button gradient" @click="send" v-if="!app.misc.disabled">Skicka</a>\
-      <a class="button gradient" @click="reset" v-if="app.misc.disabled">Ställ en ny fråga</a>\
+      <textarea v-model="message" maxlength="100" v-if="!disabled"></textarea>\
+      <select v-model="category">\
+        <option value="" selected disabled>Välj kategori</option>\
+        <option value="c">C</option>\
+        <option value="java">Java</option>\
+        <option value="haskell">Haskell</option>\
+        <option value="haskell">Erlang</option>\
+        <option value="c++">C++</option>\
+        <option value="c++">Annat</option>\
+      </select>\
+      <p class="warning" v-if="warning.length > 0">{{ warning }}</p>\
+      <a class="button gradient" @click="send" v-if="!disabled">Skicka</a>\
+      <a class="button gradient" @click="reset" v-if="disabled">Ställ en ny fråga</a>\
     </section>\
   </div>',
   methods: {
     send: function () {
-      if (app.question.message.length < 20) {
-        app.misc.message = 'För kort text.';
-      } else if (!app.misc.canPost) {
-        app.misc.message = 'Du skickar frågor för ofta, vänta lite.';
+      if (this.message.length < 20) {
+        this.warning = 'För kort text.';
+      } else if (this.shared.cooldown) {
+        this.warning = 'Du skickar frågor för ofta, vänta lite.';
       }
       else {
-        app.misc.canPost = false;
-        app.misc.disabled = true;
-        app.misc.message = 'Fråga skickad!';
+        store.setCooldown(true);
+        this.disabled = true;
+        this.warning = '';
         this.questionAdd();
       }
     },
     reset: function () {
-      app.question.message = '';
-
-      app.misc.message = '';
-      app.misc.disabled = false;
+      this.message = '';
+      this.warning = '';
+      this.disabled = false;
     },
     questionAdd: function () {
       const question = {
-        id: app.id,
-        message: app.question.message,
-        name: app.name,
-        picture: app.picture
+        id: this.shared.id,
+        message: this.message,
+        name: this.shared.name,
+        picture: this.shared.picture
       };
 
       socket.emit('client/questionAdd', {question: question});
-      socket.emit('client/cooldownAdd', {id: app.id});
+      socket.emit('client/cooldownAdd', {id: this.shared.id});
     }
   }
 });
