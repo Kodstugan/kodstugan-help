@@ -301,6 +301,11 @@ section {
   font-size: 18px;
 }
 
+.question-full-v .tag {
+  margin-top: 10px;
+  opacity:    0.75;
+}
+
 .question-full-v .button {
   width:   auto;
   display: inline-block;
