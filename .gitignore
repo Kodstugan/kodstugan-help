@@ -62,3 +62,5 @@ typings/
 .DS_Store
 credentials.json
 sessions
+server.key
+server.crt

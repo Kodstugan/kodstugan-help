@@ -38,7 +38,8 @@ const router = new VueRouter({
         left_column: null,
         right_column: null,
         full_column: question_full_v,
-      }
+      },
+      props: {full_column: true}
     },
     {
       path: '/me',

@@ -16,6 +16,7 @@ html, body {
 body {
   background: #161616;
   overflow:   auto;
+  padding:    0 20px;
 }
 
 .red {
@@ -24,6 +25,10 @@ body {
 
 .green {
   background: #6ABC1C;
+}
+
+.purple {
+  background: #309BF7;
 }
 
 #app {
@@ -77,6 +82,17 @@ p {
 
 p.small {
   font-size: 14px;
+}
+
+p.warning {
+  background: red;
+  opacity:    1;
+  padding:    5px 0;
+}
+
+p.success {
+  opacity: 1;
+  padding: 5px 0;
 }
 
 .button {
@@ -156,7 +172,7 @@ section {
 
 .question-v .message {
   padding-right: 50px;
-  word-break:    break-all;
+  word-break:    normal;
 }
 
 .question-v .button {
@@ -263,7 +279,7 @@ section {
 /* question-full-v */
 
 .question-full-v {
-  padding:    60px 30px;
+  padding:    60px 0 0 0;
   text-align: center;
   color:      #fff;
 }
@@ -289,4 +305,71 @@ section {
   width:   auto;
   display: inline-block;
   padding: 10px 20px;
+}
+
+.question-full-v .comment-area {
+  width:      100%;
+  margin-top: 40px;
+  position:   relative;
+}
+
+.question-full-v .comment-area img {
+  width:    23px;
+  position: absolute;
+  top:      20px;
+  left:     20px;
+  margin:   0;
+}
+
+.question-full-v .comment-area textarea {
+  width:              100%;
+  max-width:          100%;
+  min-height:         100px;
+  padding:            20px 129px 20px 63px;
+  border:             0;
+  font-size:          15px;
+  margin:             0;
+  display:            block;
+  resize:             vertical;
+  line-height:        1.5;
+  -webkit-appearance: none;
+  outline:            0;
+}
+
+.question-full-v .comment-area .button {
+  position: absolute;
+  right:    20px;
+  bottom:   20px;
+  margin:   0;
+}
+
+.question-full-v .comments {
+  margin-top:  40px;
+  line-height: 2;
+  padding:     0 0 0 20px;
+  list-style:  none;
+  text-align:  left;
+  border-top:  1px solid rgba(255, 255, 255, 0.25);
+}
+
+.question-full-v .comments li {
+  position:      relative;
+  padding:       20px 0 20px 40px;
+  line-height:   1.5;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.question-full-v .comments span {
+  font-weight: 500;
+}
+
+.question-full-v .comments .remove {
+  position: absolute;
+  top:      21px;
+  left:     0;
+}
+
+.question-full-v .comments .remove img {
+  width:  20px;
+  margin: 0;
 }
