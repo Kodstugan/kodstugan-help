@@ -67,6 +67,7 @@ Vue.component('me-question-v', {
     <div class="right-column">\
       <p class="name">{{ question.name }}</p>\
       <p class="message">{{ question.message }}</p>\
+      <router-link :to="{ name: \'question\', params: { id: id }}" class="button green">Läs mer</router-link>\
       <a v-if="question.id === app.id" @click="questionRemove" class="button red">Ta bort fråga</a>\
     </div>\
   </div>',
@@ -89,7 +90,7 @@ const question_list_v = Vue.component('question-list-v', {
   template: '\
   <div class="question-list-v gradient">\
     <h1>Hjälplistan</h1>\
-    <question-v v-for="(question, key) in app.questions" :question="question" :key="key" :id="key"></question-v>\
+    <question-v v-for="(question, key) in app.questions" :question="question" :key="key" :id="key" v-if="!question.solved"></question-v>\
   </div>',
 });
 
@@ -140,14 +141,15 @@ const question_full_v = Vue.component('question-full-v', {
       <p class="name">{{ shared.questions[id].name }}</p>\
       <p class="message">{{ shared.questions[id].message }}</p>\
       <p class="tag">#{{ shared.questions[id].category }}</p>\
-      <a class="button green" v-if="shared.questions[id].id === shared.id">Markera som löst</a>\
+      <a class="button green" v-if="!shared.questions[id].solved && shared.questions[id].id === shared.id" @click="markSolved">Markera som löst</a>\
+      <p class="button border" v-if="shared.questions[id].solved">Denna fråga har markerats som löst.</p>\
       <ul class="comments" v-if="shared.questions[id].comments !== undefined">\
       <li v-for="(comment, key) in shared.questions[id].comments">\
         <span><span v-if="comment.id === shared.questions[id].id">👑</span> {{ comment.name }}</span>: {{ comment.message }} <a v-if="comment.id === shared.id"\
         @click="commentRemove(key)" class="remove"><img src="/assets/images/delete.svg"></a>\
       </li>\
       </ul>\
-      <div class="comment-area">\
+      <div class="comment-area" v-if="!shared.questions[id].solved">\
         <img :src="shared.picture">\
         <textarea class="comment" maxlength="200" placeholder="Skriv en kommentar" v-model="message" @keydown.enter.exact.prevent\
         @keyup.enter.exact="send"></textarea>\
@@ -183,6 +185,9 @@ const question_full_v = Vue.component('question-full-v', {
     },
     commentRemove: function (ckey) {
       socket.emit('client/commentRemove', {key: this.id, ckey: ckey})
+    },
+    markSolved: function () {
+      socket.emit('client/questionSolved', {key: this.id})
     }
   }
 });
@@ -263,7 +268,8 @@ const new_v = Vue.component('new-v', {
         message: this.message,
         name: this.shared.name,
         picture: this.shared.picture,
-        category: this.category
+        category: this.category,
+        solved: false
       };
 
       socket.emit('client/questionAdd', {question: question});
