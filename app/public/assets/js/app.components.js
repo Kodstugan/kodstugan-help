@@ -139,15 +139,16 @@ const question_full_v = Vue.component('question-full-v', {
       <img :src="shared.questions[id].picture">\
       <p class="name">{{ shared.questions[id].name }}</p>\
       <p class="message">{{ shared.questions[id].message }}</p>\
+      <p class="tag">#{{ shared.questions[id].category }}</p>\
       <a class="button green" v-if="shared.questions[id].id === shared.id">Markera som löst</a>\
       <ul class="comments" v-if="shared.questions[id].comments !== undefined">\
       <li v-for="(comment, key) in shared.questions[id].comments">\
-        <span><span v-if="shared.questions[id].id === shared.id">👑</span> {{ comment.name }}</span>: {{ comment.message }} <a v-if="shared.questions[id].id === shared  .id"\
+        <span><span v-if="comment.id === shared.questions[id].id">👑</span> {{ comment.name }}</span>: {{ comment.message }} <a v-if="comment.id === shared.id"\
         @click="commentRemove(key)" class="remove"><img src="/assets/images/delete.svg"></a>\
       </li>\
       </ul>\
       <div class="comment-area">\
-        <img :src="shared.questions[id].picture">\
+        <img :src="shared.picture">\
         <textarea class="comment" maxlength="200" placeholder="Skriv en kommentar" v-model="message" @keydown.enter.exact.prevent\
         @keyup.enter.exact="send"></textarea>\
         <a class="button green" @click="send">Skicka</a>\
@@ -160,7 +161,7 @@ const question_full_v = Vue.component('question-full-v', {
       if (this.message.length < 10) {
         this.warning = 'För kort text.';
       } else if (this.shared.cooldown) {
-        this.warning = 'Du skickar frågor för ofta, vänta lite.';
+        this.warning = 'Du skickar kommentarer för ofta, vänta lite.';
       }
       else {
         store.setCooldown(true);
@@ -171,6 +172,7 @@ const question_full_v = Vue.component('question-full-v', {
     },
     commentAdd: function () {
       const comment = {
+        id: this.shared.id,
         name: this.shared.name,
         picture: this.shared.picture,
         message: this.message,
@@ -220,14 +222,14 @@ const new_v = Vue.component('new-v', {
         Nedanför kan du ställa en fråga, försök att förklara tydligt vad du har problem med.\
       </p>\
       <textarea v-model="message" maxlength="100" v-if="!disabled"></textarea>\
-      <select v-model="category">\
+      <select v-model="category" v-if="!disabled">\
         <option value="" selected disabled>Välj kategori</option>\
         <option value="c">C</option>\
         <option value="java">Java</option>\
         <option value="haskell">Haskell</option>\
-        <option value="haskell">Erlang</option>\
+        <option value="erlang">Erlang</option>\
         <option value="c++">C++</option>\
-        <option value="c++">Annat</option>\
+        <option value="other">Annat</option>\
       </select>\
       <p class="warning" v-if="warning.length > 0">{{ warning }}</p>\
       <a class="button gradient" @click="send" v-if="!disabled">Skicka</a>\
@@ -238,6 +240,8 @@ const new_v = Vue.component('new-v', {
     send: function () {
       if (this.message.length < 20) {
         this.warning = 'För kort text.';
+      } else if (this.category.length === 0) {
+        this.warning = 'Du måste välja en kategori.'
       } else if (this.shared.cooldown) {
         this.warning = 'Du skickar frågor för ofta, vänta lite.';
       }
@@ -258,7 +262,8 @@ const new_v = Vue.component('new-v', {
         id: this.shared.id,
         message: this.message,
         name: this.shared.name,
-        picture: this.shared.picture
+        picture: this.shared.picture,
+        category: this.category
       };
 
       socket.emit('client/questionAdd', {question: question});
