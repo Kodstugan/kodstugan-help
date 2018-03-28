@@ -126,23 +126,35 @@ Vue.component('question-v', {
 });
 
 const question_full_v = Vue.component('question-full-v', {
+  props: ['app'],
   data: function () {
     return {
-      app: {},
-      id: null
+      id: null,
+      question: {}
     }
   },
-  created: function () {
-    this.app = this.$router.app;
+  mounted: function () {
     this.id = this.$route.params.id;
+  },
+  beforeUpdate: function () {
+    let question = this.app.questions[this.id];
+
+    if (question !== undefined) {
+      this.question = question;
+    }
   },
   template: '\
   <div class="question-full-v gradient">\
     <h1>Fråga #{{ id }}</h1>\
-    <img :src="app.questions[id].picture">\
-    <p class="name">{{ app.questions[id].name }}</p>\
-    <p class="message">{{ app.questions[id].message }}</p>\
-    <a class="button green">Hjälp {{ app.questions[id].name }}</a>\
+    <img :src="question.picture">\
+    <p class="name">{{ question.name }}</p>\
+    <p class="message">{{ question.message }}</p>\
+    <a class="button green" v-if="question.id === app.id">Markera som löst</a>\
+    <div class="comment-area">\
+    <img :src="question.picture">\
+    <textarea class="comment" maxlength="200" placeholder="Skriv en kommentar"></textarea>\
+    <a class="button green">Skicka</a>\
+    </div>\
   </div>',
 });
 

@@ -30,6 +30,10 @@ module.exports = function (app, io) {
       io.emit('client/onQuestionRemove', {key: data.key});
     });
 
+    socket.on('client/commentAdd', function (data) {
+
+    });
+
     socket.on('client/cooldownAdd', function (data) {
       let user = {
         id: data.id,

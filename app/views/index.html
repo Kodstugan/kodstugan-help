@@ -21,10 +21,10 @@
 <div id="app">
   <router-view class="menu" name="menu"></router-view>
   <div class="grid">
-    <router-view class="left-column" name="left_column"></router-view>
-    <router-view class="right-column" name="right_column"></router-view>
+    <router-view class="left-column" name="left_column" :app="this"></router-view>
+    <router-view class="right-column" name="right_column" :app="this"></router-view>
   </div>
-  <router-view class="full-column" name="full_column"></router-view>
+  <router-view class="full-column" name="full_column" :app="this"></router-view>
 </div>
 </body>
 </html>
