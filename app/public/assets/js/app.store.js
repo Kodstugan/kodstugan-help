@@ -2,25 +2,34 @@
 
 let store = {
   state: {
-    id: null,
-    name: '',
-    picture: '',
-    cooldown: false,
+    user: {
+      id: null,
+      name: '',
+      picture: '',
+      hasCooldown: false
+    },
+    notifications: {
+      hasActivity: false,
+      messages: {}
+    },
     questions: {}
   },
   setId(id) {
-    this.state.id = id
+    this.user.state.id = id
   },
   setName(name) {
-    this.state.name = name;
+    this.user.state.name = name;
   },
   setPicture(picture) {
-    this.state.picture = picture;
-  },
-  setQuestions(questions) {
-    this.state.questions = questions;
+    this.user.state.picture = picture;
   },
   setCooldown(cooldown) {
-    this.state.cooldown = cooldown;
+    this.user.state.cooldown = cooldown;
+  },
+  setQuestions(questions) {
+    this.user.state.questions = questions
+  },
+  setActivity(activity) {
+    this.user.state.notifications.activity = activity;
   }
 };

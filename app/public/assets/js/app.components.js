@@ -203,7 +203,7 @@ const menu_v = Vue.component('menu-v', {
     <ul>\
       <li><router-link to="/">Start</router-link></li>\
       <li><router-link to="/new">Ställ en fråga</router-link></li>\
-      <li><router-link to="/me"><img :src="shared.picture" alt=""></router-link></li>\
+      <li><router-link to="/me"><img :src="shared.picture" alt=""></router-link><router-link to="/activity" v-if="shared.activity" class="activity green"></router-link></li>\
       <li><router-link to="/me"><p>{{ shared.name }}</p></router-link></li>\
     </ul>\
   </div>'
