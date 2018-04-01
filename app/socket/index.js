@@ -1,18 +1,26 @@
 "use strict";
 
 module.exports = function (app, io) {
+  // TODO: Use MongoDB as backend.
   let users = {};
+  let sockets = {};
   let questions = {};
   let counter = -1;
 
   /**
    * Start listening on incoming socket connections.
-   * @param socket
    */
   io.on('connection', function (socket) {
     // Add socket + id on first connection.
-    const id = socket.request.user.id;
-    users[id] = {socket: socket, hasCooldown: false};
+    let request = socket.request;
+    const id = request.user.id;
+
+    users[id] = {
+      id: id,
+      name: request.user.displayName,
+      hasCooldown: false
+    };
+    sockets[id] = socket;
 
     /**
      * client/onLogin

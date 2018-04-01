@@ -4,7 +4,7 @@ module.exports = function (app, path, passport) {
   app.get('/auth/facebook/success',
     passport.authenticate('facebook', {
       successRedirect: '/',
-      failureRedirect: '/failed'
+      failureRedirect: '/auth/facebook/failure'
     }));
 
   app.get('/auth/facebook', passport.authenticate('facebook'));
