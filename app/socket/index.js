@@ -1,16 +1,26 @@
 "use strict";
 
 module.exports = function (app, io) {
+  let users = {};
   let questions = {};
-  let cooldowns = [];
   let counter = -1;
 
+  /**
+   * Start listening on incoming socket connections.
+   * @param socket
+   */
   io.on('connection', function (socket) {
+    // Add socket + id on first connection.
+    const id = socket.request.user.id;
+    users[id] = {socket: socket};
+
+    /**
+     * client/onLogin
+     * Emits user data to logged in socket connection.
+     */
     socket.emit('client/onLogin', {
-      id: socket.request.user.id,
-      name: socket.request.user.displayName,
+      user: users[id],
       questions: questions,
-      cooldown: hasCooldown(socket.request.user.id)
     });
 
     socket.on('client/questionAdd', function (data) {
