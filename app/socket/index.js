@@ -12,7 +12,7 @@ module.exports = function (app, io) {
   io.on('connection', function (socket) {
     // Add socket + id on first connection.
     const id = socket.request.user.id;
-    users[id] = {socket: socket};
+    users[id] = {socket: socket, hasCooldown: false};
 
     /**
      * client/onLogin
@@ -23,68 +23,85 @@ module.exports = function (app, io) {
       questions: questions,
     });
 
+    /**
+     * client/questionAdd
+     * Receives new question from socket and emits it to all connected sockets.
+     */
     socket.on('client/questionAdd', function (data) {
-      const key = counterNext();
-
+      const key = getNewKey();
       questions[key] = data.question;
-      io.emit('client/onQuestionAdd', {key: key, question: data.question});
 
-      setTimeout(function () {
-        delete questions[key];
-        io.emit('client/onQuestionRemove', {key: key});
-      }, 24 * 60 * 60 * 1000);
+      io.emit('client/onQuestionAdd', {key: key, question: data.question});
     });
 
+    /**
+     * client/questionRemove
+     * Receives question key from socket to delete and updates all connected sockets.
+     */
     socket.on('client/questionRemove', function (data) {
       delete questions[data.key];
       io.emit('client/onQuestionRemove', {key: data.key});
     });
 
+    /**
+     * client/commentAdd
+     * Receives new comment from socket and emits it to all connected sockets.
+     */
     socket.on('client/commentAdd', function (data) {
-      if (questions[data.key].comments === undefined) {
-        questions[data.key].comments = {};
-        questions[data.key].comments[counterNext()] = data.comment;
-      } else {
-        questions[data.key].comments[counterNext()] = data.comment;
+      const key = data.key;
+      let question = questions[key];
+
+      if (question.comments === undefined) {
+        question.comments = {};
       }
 
-      io.emit('client/onQuestionAdd', {key: data.key, question: questions[data.key]});
+      question.comments[getNewKey()] = data.comment;
+
+      io.emit('client/onQuestionAdd', {key: key, question: question});
     });
 
+    /**
+     * client/commentRemove
+     * Receives comment key from socket to delete and updates all connected sockets.
+     */
     socket.on('client/commentRemove', function (data) {
       if (questions[data.key].comments !== undefined) {
-        delete questions[data.key].comments[data.ckey];
-        io.emit('client/onQuestionAdd', {key: data.key, question: questions[data.key]});
+        const key = data.key;
+        let question = questions[key];
+
+        delete question.comments[data.commentKey];
+        io.emit('client/onQuestionAdd', {key: key, question: question});
       }
     });
 
+    /**
+     * client/cooldownAdd
+     * Receives user id to add cooldown to.
+     */
     socket.on('client/cooldownAdd', function (data) {
-      let user = {
-        id: data.id,
-        socket: socket
-      };
-
-      cooldowns.push(user);
+      let user = users[data.id];
+      user.hasCooldown = true;
 
       setTimeout(function () {
-        const index = cooldowns.findIndex(x => x.id === data.id);
-        cooldowns.splice(index, 1);
+        user.hasCooldown = false;
         socket.emit('client/onCooldownRemove');
       }, 10 * 1000);
     });
 
+    /**
+     * client/questionSolved
+     * Receives question to mark as solved and updates all connected sockets.
+     */
     socket.on('client/questionSolved', function (data) {
-      questions[data.key].solved = true;
-      io.emit('client/onQuestionAdd', {key: data.key, question: questions[data.key]});
+      const key = data.key;
+      let question = questions[key];
+
+      question.solved = true;
+      io.emit('client/onQuestionAdd', {key: key, question: question});
     })
   });
 
-  function counterNext() {
-    counter++;
-    return counter;
-  }
-
-  function hasCooldown(id) {
-    return !(cooldowns.find(x => x.id === id) === undefined);
+  function getNewKey() {
+    return counter++;
   }
 };
